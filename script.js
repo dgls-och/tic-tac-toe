@@ -9,13 +9,9 @@ const gameBoard = (function () {
         }
     }
 
-    const printBoard = () => {
-        return board;
-    };
+    const printBoard = () => board;
 
-    const getCell = (row, column) => {
-        return board[row][column];
-    }
+    const getCell = (row, column) => board[row][column];
 
     return { printBoard, getCell };
 })();
