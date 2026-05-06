@@ -48,7 +48,10 @@ function Player(name, marker) {
     let name = name;
     let marker = marker;
 
-    return { name, marker };
+    const getName = () => name;
+    const getMarker = () => marker;
+
+    return { getName, getMarker };
 }
 
 console.log(boardCells.getCellA1());
