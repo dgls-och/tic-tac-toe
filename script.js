@@ -37,11 +37,18 @@ const boardCells = (function () {
     const getCellC2 = () => cellC2;
     const getCellC3 = () => cellC3;
 
-    return { 
+    return {
         getCellA1, getCellA2, getCellA3,
         getCellB1, getCellB2, getCellB3,
-        getCellC1, getCellC2, getCellC3 
+        getCellC1, getCellC2, getCellC3
     };
 })();
+
+function Player(name, marker) {
+    let name = name;
+    let marker = marker;
+
+    return { name, marker };
+}
 
 console.log(boardCells.getCellA1());
