@@ -44,4 +44,5 @@ function Player(name, marker) {
     return { getName, getMarker, playGame };
 }
 
-console.log(boardCells.getCellC3());
+const player1 = Player("human", "O");
+const player2 = Player("computer", "X");
