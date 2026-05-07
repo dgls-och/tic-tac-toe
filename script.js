@@ -17,25 +17,15 @@ const gameBoard = (function () {
 })();
 
 const boardCells = (function () {
-    const cellA1 = gameBoard.getCell(0, 0);
-    const cellA2 = gameBoard.getCell(0, 1);
-    const cellA3 = gameBoard.getCell(0, 2);
-    const cellB1 = gameBoard.getCell(1, 0);
-    const cellB2 = gameBoard.getCell(1, 1);
-    const cellB3 = gameBoard.getCell(1, 2);
-    const cellC1 = gameBoard.getCell(2, 0);
-    const cellC2 = gameBoard.getCell(2, 1);
-    const cellC3 = gameBoard.getCell(2, 2);
-
-    const getCellA1 = () => cellA1;
-    const getCellA2 = () => cellA2;
-    const getCellA3 = () => cellA3;
-    const getCellB1 = () => cellB1;
-    const getCellB2 = () => cellB2;
-    const getCellB3 = () => cellB3;
-    const getCellC1 = () => cellC1;
-    const getCellC2 = () => cellC2;
-    const getCellC3 = () => cellC3;
+    const getCellA1 = () => gameBoard.getCell(0, 0);
+    const getCellA2 = () => gameBoard.getCell(0, 1);
+    const getCellA3 = () => gameBoard.getCell(0, 2);
+    const getCellB1 = () => gameBoard.getCell(1, 0);
+    const getCellB2 = () => gameBoard.getCell(1, 1);
+    const getCellB3 = () => gameBoard.getCell(1, 2);
+    const getCellC1 = () => gameBoard.getCell(2, 0);
+    const getCellC2 = () => gameBoard.getCell(2, 1);
+    const getCellC3 = () => gameBoard.getCell(2, 2);
 
     return {
         getCellA1, getCellA2, getCellA3,
@@ -54,3 +44,4 @@ function Player(name, marker) {
     return { getName, getMarker, playGame };
 }
 
+console.log(boardCells.getCellC3());
