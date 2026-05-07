@@ -46,3 +46,18 @@ function Player(name, marker) {
 
 const player1 = Player("human", "O");
 const player2 = Player("computer", "X");
+
+const gameController = (function () {
+    const scores = {
+        player1: 0,
+        player2: 0
+    }
+
+    const getScore = player => {
+        return (player == "player1") ? scores.player1 : scores.player2;
+    }
+
+    return { getScore };
+})();
+
+console.log(gameController.getScore("player1"))
