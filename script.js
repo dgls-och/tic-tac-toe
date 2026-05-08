@@ -69,6 +69,16 @@ const gameController = (function () {
         return (player == "player1") ? scores.player1 : scores.player2;
     };
 
+    const placeMarker = (whoPlays, row, col) => {
+        let player = (whoPlays == "player1") ? player1 : player2;
+        let capitalisedName = player.getName()[0].toUpperCase()
+            + player.getName().slice(1);
+        console.log(`${capitalisedName}'s turn...`);
+        player.playGame(row, col);
+        player.setPlayedStatus(true);
+        console.log(player.getPlayedStatus())
+    }
+
     const playRound = () => {
         switch (true) {
             case player1.getPlayedStatus() == false
@@ -76,42 +86,21 @@ const gameController = (function () {
                 let min = 1, max = 2;
                 let starterDeterminer = Math.floor(Math.random()
                     * (max - min + 1) + min);
-                let capitalisedName = null;
                 switch (starterDeterminer) {
                     case 1:
-                        capitalisedName = player1.getName()[0].toUpperCase()
-                            + player1.getName().slice(1);
-                        console.log(`${capitalisedName}'s turn...`);
-                        player1.playGame(0, 1);
-                        player1.setPlayedStatus(true);
-                        console.log(player1.getPlayedStatus())
+                        placeMarker("player1", 1, 0);
                         break;
                     case 2:
-                        capitalisedName = player2.getName()[0].toUpperCase()
-                            + player2.getName().slice(1);
-                        console.log(`${capitalisedName}'s turn...`);
-                        player2.playGame(1, 0);
-                        player2.setPlayedStatus(true);
-                        console.log(player2.getPlayedStatus())
+                        placeMarker("player2", 0, 1);
                 }
                 break;
             case !(player1.getPlayedStatus() == true
                 && player2.getPlayedStatus() == false):
-                capitalisedName = player1.getName()[0].toUpperCase()
-                    + player1.getName().slice(1);
-                console.log(`${capitalisedName}'s turn...`);
-                player1.playGame(1, 0);
-                player1.setPlayedStatus(true);
-                console.log(player1.getPlayedStatus());
+                placeMarker("player1", 2, 1);
                 break;
             case !(player2.getPlayedStatus() == true
                 && player1.getPlayedStatus() == false):
-                capitalisedName = player2.getName()[0].toUpperCase()
-                    + player2.getName().slice(1);
-                console.log(`${capitalisedName}'s turn...`);
-                player2.playGame(1, 0);
-                player2.setPlayedStatus(true);
-                console.log(player2.getPlayedStatus())
+                placeMarker("player2", 1, 2);
         }
     };
 
