@@ -9,7 +9,7 @@ The gameboard is the first thing the programme needs. Of course not on the viewp
 It should help to give you a painful snippet of my board printing code.  
 ```js
 const board = [];
-for(let i = 0; i < 3; i++) {
+for (let i = 0; i < 3; i++) {
     let row = [];
     board.push(row);
     for (let j = 0; j < 3; j++) {
@@ -19,5 +19,5 @@ for(let i = 0; i < 3; i++) {
 }
 ``` 
 
-As I reflect on this piece of code now, I realise that not only had I written too many lines of code but also written a piece of my programme that requires extra memory resourses. More so, instead of quietly returning the board, I added a method with which to print the board. Bear in mind that the code above was only a part of a `gameBoard` module. The new `GameBoard` module only returns the board. Neat and simple.  
+As I reflect on this piece of code now, I realise that not only had I written too many lines of code but also that I had written a piece of my programme that requires extra memory resourses. More so, instead of quietly returning the board, I added a method with which to print the board. Bear in mind that the code above was only a part of a `gameBoard` module. The new `GameBoard` module only returns the board. Neat and simple.  
 
