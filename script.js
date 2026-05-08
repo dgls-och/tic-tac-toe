@@ -35,13 +35,25 @@ const boardCells = (function () {
 })();
 
 function Player(name, marker) {
+    let played = false;
+
+    const setPlayedStatus = stat => {
+        played = stat;
+    };
+    const getPlayedStatus = () => played;
     const getName = () => name;
     const getMarker = () => marker;
     const playGame = (boardRow, boardColumn) => {
         gameBoard.getCell(boardRow, boardColumn).push(marker);
     };
 
-    return { getName, getMarker, playGame };
+    return {
+        getName
+        , getMarker
+        , playGame
+        , getPlayedStatus
+        , setPlayedStatus
+    };
 }
 
 const player1 = Player("human", "O");
@@ -55,9 +67,57 @@ const gameController = (function () {
 
     const getScore = player => {
         return (player == "player1") ? scores.player1 : scores.player2;
-    }
+    };
 
-    return { getScore };
+    const playRound = () => {
+        switch (true) {
+            case player1.getPlayedStatus() == false
+                && player2.getPlayedStatus() == false:
+                let min = 1, max = 2;
+                let starterDeterminer = Math.floor(Math.random()
+                    * (max - min + 1) + min);
+                let capitalisedName = null;
+                switch (starterDeterminer) {
+                    case 1:
+                        capitalisedName = player1.getName()[0].toUpperCase()
+                            + player1.getName().slice(1);
+                        console.log(`${capitalisedName}'s turn...`);
+                        player1.playGame(0, 1);
+                        player1.setPlayedStatus(true);
+                        console.log(player1.getPlayedStatus())
+                        break;
+                    case 2:
+                        capitalisedName = player2.getName()[0].toUpperCase()
+                            + player2.getName().slice(1);
+                        console.log(`${capitalisedName}'s turn...`);
+                        player2.playGame(1, 0);
+                        player2.setPlayedStatus(true);
+                        console.log(player2.getPlayedStatus())
+                }
+                break;
+            case !(player1.getPlayedStatus() == true
+                && player2.getPlayedStatus() == false):
+                capitalisedName = player1.getName()[0].toUpperCase()
+                    + player1.getName().slice(1);
+                console.log(`${capitalisedName}'s turn...`);
+                player1.playGame(1, 0);
+                player1.setPlayedStatus(true);
+                console.log(player1.getPlayedStatus());
+                break;
+            case !(player2.getPlayedStatus() == true
+                && player1.getPlayedStatus() == false):
+                capitalisedName = player2.getName()[0].toUpperCase()
+                    + player2.getName().slice(1);
+                console.log(`${capitalisedName}'s turn...`);
+                player2.playGame(1, 0);
+                player2.setPlayedStatus(true);
+                console.log(player2.getPlayedStatus())
+        }
+    };
+
+    return { getScore, playRound };
 })();
 
-console.log(gameController.getScore("player1"))
+gameController.playRound();
+//console.log(player2.getPlayedStatus())
+console.log(gameBoard.printBoard())
