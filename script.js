@@ -172,3 +172,9 @@ const GameController = (() => {
         getCurrentPlayer
     };
 })();
+
+GameController.playRound(0, 0);
+GameController.playRound(1, 1);
+GameController.playRound(0, 1);
+GameController.playRound(2, 2);
+GameController.playRound(0, 2);
