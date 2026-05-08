@@ -21,3 +21,8 @@ for (let i = 0; i < 3; i++) {
 
 As I reflect on this piece of code now, I realise that not only had I written too many lines of code but also that I had written a piece of my programme that requires extra memory resourses. More so, instead of quietly returning the board, I added a method with which to print the board. Bear in mind that the code above was only a part of a `gameBoard` module. The new `GameBoard` module only returns the board. Neat and simple.  
 
+## In the end
+
+AI guidance was used throughout the architectural and debugging process of this console-based Tic-Tac-Toe project. The primary challenges involved understanding module patterns, state management, execution flow, and responsibility separation between objects such as `Gameboard`, `Player`, and `GameController`.
+
+Rather than fully mastering these concepts during the project, I was mainly exposed to foundational software engineering ideas including encapsulation, modular design, abstraction, and game state flow. The guidance helped simplify an initially over-engineered approach into a more maintainable console application structure while providing practical exposure to JavaScript factory functions and module patterns.
