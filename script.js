@@ -4,7 +4,7 @@ const gameBoard = (function () {
         const row = []
         board.push(row);
         for (let i = 0; i < 3; i++) {
-            const column = [];
+            const column = "";
             row.push(column);
         }
     }
