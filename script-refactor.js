@@ -15,6 +15,23 @@ const Gameboard = (() => {
         return board.map(row => [...row]);
     };
 
+    const getEmptyCells = () => {
+        const emptyCells = [];
+
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                if (cell === "") {
+                    emptyCells.push({
+                        row: rowIndex,
+                        col: colIndex
+                    });
+                }
+            });
+        });
+
+        return emptyCells;
+    };
+
     const placeMarker = (row, col, marker) => {
         if (!isValidPosition(row, col)) {
             return false;
@@ -49,16 +66,34 @@ const Gameboard = (() => {
 
     return {
         getBoard,
+        getEmptyCells,
         placeMarker,
         isFull,
         reset
     };
 })();
 
+
 const Player = (name, marker) => ({
     name,
     marker
 });
+
+
+const ComputerPlayer = {
+    chooseMove(emptyCells) {
+        if (emptyCells.length === 0) {
+            return null;
+        }
+
+        const randomIndex = Math.floor(
+            Math.random() * emptyCells.length
+        );
+
+        return emptyCells[randomIndex];
+    }
+};
+
 
 const GameRules = (() => {
     const WINNING_LINES = [
@@ -97,77 +132,90 @@ const GameRules = (() => {
     };
 })();
 
+
 const GameView = (() => {
-  const cells = document.querySelectorAll(".cell");
-  const status = document.querySelector(".status");
+    const cells = document.querySelectorAll(".cell");
+    const status = document.querySelector(".status");
 
-  const renderBoard = (board) => {
-    cells.forEach((cell) => {
-      const row = Number(cell.dataset.row);
-      const col = Number(cell.dataset.col);
+    const renderBoard = (board) => {
+        cells.forEach(cell => {
+            const row = Number(cell.dataset.row);
+            const col = Number(cell.dataset.col);
 
-      cell.textContent = board[row][col];
-      cell.disabled = board[row][col] !== "";
-    });
-  };
+            cell.textContent = board[row][col];
 
-  const showMove = (player) => {
-    status.textContent =
-      `${player.name} placed ${player.marker}.`;
-  };
+            cell.disabled = board[row][col] !== "";
+        });
+    };
 
-  const showWinner = (player) => {
-    status.textContent =
-      `${player.name} wins!`;
-  };
+    const showMove = (player) => {
+        status.textContent =
+            `${player.name} placed ${player.marker}.`;
+    };
 
-  const showDraw = () => {
-    status.textContent = "It's a draw!";
-  };
+    const showWinner = (player) => {
+        status.textContent =
+            `${player.name} wins!`;
+    };
 
-  const showOccupiedCell = () => {
-    status.textContent = "That cell is already occupied.";
-  };
+    const showDraw = () => {
+        status.textContent = "It's a draw!";
+    };
 
-  const showGameOver = () => {
-    status.textContent = "Game over. Restart to play again.";
-  };
+    const showOccupiedCell = () => {
+        status.textContent =
+            "That cell is already occupied.";
+    };
 
-  const showTurn = (player) => {
-    status.textContent =
-      `${player.name}'s turn.`;
-  };
+    const showGameOver = () => {
+        status.textContent =
+            "Game over. Restart to play again.";
+    };
 
-  const showRestart = () => {
-    status.textContent = "Human's turn.";
-  };
-  
-  document.querySelector(".board").addEventListener("click", (event) => {
-    const cell = event.target.closest(".cell");
+    const showTurn = (player) => {
+        status.textContent =
+            `${player.name}'s turn.`;
+    };
 
-    if (!cell) return;
+    const showRestart = () => {
+        status.textContent = "Human's turn.";
+    };
 
-    const row = Number(cell.dataset.row);
-    const col = Number(cell.dataset.col);
+    const onCellClick = (callback) => {
+        document
+            .querySelector(".board")
+            .addEventListener("click", event => {
+                const cell = event.target.closest(".cell");
 
-    GameController.playRound(row, col);
-  });
+                if (!cell) return;
 
-  document.querySelector(".restart").addEventListener("click", () => {
-    GameController.restartGame();
-  });
+                const row = Number(cell.dataset.row);
+                const col = Number(cell.dataset.col);
 
-  return {
-    renderBoard,
-    showMove,
-    showWinner,
-    showDraw,
-    showOccupiedCell,
-    showGameOver,
-    showTurn,
-    showRestart
-  };
+                callback(row, col);
+            });
+    };
+
+    const onRestart = (callback) => {
+        document
+            .querySelector(".restart")
+            .addEventListener("click", callback);
+    };
+
+    return {
+        renderBoard,
+        showMove,
+        showWinner,
+        showDraw,
+        showOccupiedCell,
+        showGameOver,
+        showTurn,
+        showRestart,
+        onCellClick,
+        onRestart
+    };
 })();
+
 
 const GameController = (() => {
     const player1 = Player("Human", "X");
@@ -191,6 +239,11 @@ const GameController = (() => {
             return;
         }
 
+        // Only the human can initiate a round from the UI.
+        if (currentPlayer !== player1) {
+            return;
+        }
+
         const successfulMove = Gameboard.placeMarker(
             row,
             col,
@@ -202,15 +255,17 @@ const GameController = (() => {
             return;
         }
 
+        GameView.renderBoard(Gameboard.getBoard());
         GameView.showMove(currentPlayer);
-        GameView.showBoard(Gameboard.getBoard());
 
         const board = Gameboard.getBoard();
 
-        if (GameRules.hasWinner(
-            board,
-            currentPlayer.marker
-        )) {
+        if (
+            GameRules.hasWinner(
+                board,
+                currentPlayer.marker
+            )
+        ) {
             GameView.showWinner(currentPlayer);
             gameOver = true;
             return;
@@ -223,6 +278,55 @@ const GameController = (() => {
         }
 
         switchPlayer();
+
+        GameView.showTurn(currentPlayer);
+
+        playComputerRound();
+    };
+
+    const playComputerRound = () => {
+        const emptyCells = Gameboard.getEmptyCells();
+
+        const move = ComputerPlayer.chooseMove(emptyCells);
+
+        if (!move) {
+            return;
+        }
+
+        const successfulMove = Gameboard.placeMarker(
+            move.row,
+            move.col,
+            currentPlayer.marker
+        );
+
+        if (!successfulMove) {
+            return;
+        }
+
+        GameView.renderBoard(Gameboard.getBoard());
+        GameView.showMove(currentPlayer);
+
+        const board = Gameboard.getBoard();
+
+        if (
+            GameRules.hasWinner(
+                board,
+                currentPlayer.marker
+            )
+        ) {
+            GameView.showWinner(currentPlayer);
+            gameOver = true;
+            return;
+        }
+
+        if (GameRules.isDraw(board)) {
+            GameView.showDraw();
+            gameOver = true;
+            return;
+        }
+
+        switchPlayer();
+
         GameView.showTurn(currentPlayer);
     };
 
@@ -232,8 +336,8 @@ const GameController = (() => {
         currentPlayer = player1;
         gameOver = false;
 
+        GameView.renderBoard(Gameboard.getBoard());
         GameView.showRestart();
-        GameView.showBoard(Gameboard.getBoard());
     };
 
     return {
@@ -242,5 +346,14 @@ const GameController = (() => {
         getCurrentPlayer
     };
 })();
+
+
+GameView.onCellClick((row, col) => {
+    GameController.playRound(row, col);
+});
+
+GameView.onRestart(() => {
+    GameController.restartGame();
+});
 
 GameView.renderBoard(Gameboard.getBoard());
