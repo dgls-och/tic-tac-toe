@@ -97,43 +97,62 @@ const GameRules = (() => {
     };
 })();
 
-const GameView = {
-    showBoard(board) {
-        console.log(board);
-    },
+const GameView = (() => {
+  const cells = document.querySelectorAll(".cell");
+  const status = document.querySelector(".status");
 
-    showMove(player) {
-        console.log(
-            `${player.name} placed ${player.marker}`
-        );
-    },
+  const renderBoard = (board) => {
+    cells.forEach((cell) => {
+      const row = Number(cell.dataset.row);
+      const col = Number(cell.dataset.col);
 
-    showWinner(player) {
-        console.log(`${player.name} wins!`);
-    },
+      cell.textContent = board[row][col];
+      cell.disabled = board[row][col] !== "";
+    });
+  };
 
-    showDraw() {
-        console.log("It's a draw!");
-    },
+  const showMove = (player) => {
+    status.textContent =
+      `${player.name} placed ${player.marker}.`;
+  };
 
-    showOccupiedCell() {
-        console.log("Cell already occupied.");
-    },
+  const showWinner = (player) => {
+    status.textContent =
+      `${player.name} wins!`;
+  };
 
-    showGameOver() {
-        console.log("Game over.");
-    },
+  const showDraw = () => {
+    status.textContent = "It's a draw!";
+  };
 
-    showTurn(player) {
-        console.log(
-            `It's now ${player.name}'s turn.`
-        );
-    },
+  const showOccupiedCell = () => {
+    status.textContent = "That cell is already occupied.";
+  };
 
-    showRestart() {
-        console.log("Game restarted.");
-    }
-};
+  const showGameOver = () => {
+    status.textContent = "Game over. Restart to play again.";
+  };
+
+  const showTurn = (player) => {
+    status.textContent =
+      `${player.name}'s turn.`;
+  };
+
+  const showRestart = () => {
+    status.textContent = "Human's turn.";
+  };
+
+  return {
+    renderBoard,
+    showMove,
+    showWinner,
+    showDraw,
+    showOccupiedCell,
+    showGameOver,
+    showTurn,
+    showRestart
+  };
+})();
 
 const GameController = (() => {
     const player1 = Player("Human", "X");
