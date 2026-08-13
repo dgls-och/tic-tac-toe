@@ -28,15 +28,15 @@ AI guidance was used throughout the architectural and debugging process of this 
 Rather than fully mastering these concepts during the project, I was mainly exposed to foundational software engineering ideas including encapsulation, modular design, abstraction, and game state flow. The guidance helped simplify an initially over-engineered approach into a more maintainable console application structure while providing practical exposure to JavaScript factory functions and module patterns.
 
 [!INFO]
-Update:
+##Update:
 
-# Tic-Tac-Toe
+### Tic-Tac-Toe
 
 A browser-based Tic-Tac-Toe game built with vanilla HTML, CSS, and JavaScript.
 
 The project focuses on understanding **JavaScript modules, game state management, DOM manipulation, event handling, separation of concerns, and SOLID design principles** rather than simply completing a project specification.
 
-## Architecture
+### Architecture
 
 The implementation separates the game into distinct responsibilities:
 
@@ -47,17 +47,17 @@ The implementation separates the game into distinct responsibilities:
 - **GameView** — manages DOM presentation and user interaction.
 - **GameController** — coordinates game flow and player turns.
 
-## Purpose
+### Purpose
 
 The project serves primarily as a **code-reading and architecture exercise**, with emphasis on understanding why each responsibility belongs where it does and how the components interact to produce a complete application.
 
-## Technologies
+### Technologies
 
 - HTML
 - CSS
 - JavaScript
 - DOM API
 
-## Status
+### Status
 
 Functional and continuously refactored as part of JavaScript and software design practice.
