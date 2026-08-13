@@ -55,3 +55,8 @@ const Gameboard = (() => {
     };
 })();
 
+const Player = (name, marker) => ({
+    name,
+    marker
+});
+
