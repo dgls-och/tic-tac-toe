@@ -60,3 +60,39 @@ const Player = (name, marker) => ({
     marker
 });
 
+const GameRules = (() => {
+    const WINNING_LINES = [
+        // Rows
+        [[0, 0], [0, 1], [0, 2]],
+        [[1, 0], [1, 1], [1, 2]],
+        [[2, 0], [2, 1], [2, 2]],
+
+        // Columns
+        [[0, 0], [1, 0], [2, 0]],
+        [[0, 1], [1, 1], [2, 1]],
+        [[0, 2], [1, 2], [2, 2]],
+
+        // Diagonals
+        [[0, 0], [1, 1], [2, 2]],
+        [[0, 2], [1, 1], [2, 0]]
+    ];
+
+    const hasWinner = (board, marker) => {
+        return WINNING_LINES.some(line =>
+            line.every(([row, col]) =>
+                board[row][col] === marker
+            )
+        );
+    };
+
+    const isDraw = (board) => {
+        return board.every(row =>
+            row.every(cell => cell !== "")
+        );
+    };
+
+    return {
+        hasWinner,
+        isDraw
+    };
+})();
