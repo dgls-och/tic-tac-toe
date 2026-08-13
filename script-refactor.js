@@ -96,3 +96,41 @@ const GameRules = (() => {
         isDraw
     };
 })();
+
+const GameView = {
+    showBoard(board) {
+        console.log(board);
+    },
+
+    showMove(player) {
+        console.log(
+            `${player.name} placed ${player.marker}`
+        );
+    },
+
+    showWinner(player) {
+        console.log(`${player.name} wins!`);
+    },
+
+    showDraw() {
+        console.log("It's a draw!");
+    },
+
+    showOccupiedCell() {
+        console.log("Cell already occupied.");
+    },
+
+    showGameOver() {
+        console.log("Game over.");
+    },
+
+    showTurn(player) {
+        console.log(
+            `It's now ${player.name}'s turn.`
+        );
+    },
+
+    showRestart() {
+        console.log("Game restarted.");
+    }
+};
