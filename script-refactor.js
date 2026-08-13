@@ -141,6 +141,21 @@ const GameView = (() => {
   const showRestart = () => {
     status.textContent = "Human's turn.";
   };
+  
+  document.querySelector(".board").addEventListener("click", (event) => {
+    const cell = event.target.closest(".cell");
+
+    if (!cell) return;
+
+    const row = Number(cell.dataset.row);
+    const col = Number(cell.dataset.col);
+
+    GameController.playRound(row, col);
+  });
+
+  document.querySelector(".restart").addEventListener("click", () => {
+    GameController.restartGame();
+  });
 
   return {
     renderBoard,
@@ -227,3 +242,5 @@ const GameController = (() => {
         getCurrentPlayer
     };
 })();
+
+GameView.renderBoard(Gameboard.getBoard());
