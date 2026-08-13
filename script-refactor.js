@@ -134,3 +134,77 @@ const GameView = {
         console.log("Game restarted.");
     }
 };
+
+const GameController = (() => {
+    const player1 = Player("Human", "X");
+    const player2 = Player("Computer", "O");
+
+    let currentPlayer = player1;
+    let gameOver = false;
+
+    const switchPlayer = () => {
+        currentPlayer =
+            currentPlayer === player1
+                ? player2
+                : player1;
+    };
+
+    const getCurrentPlayer = () => currentPlayer;
+
+    const playRound = (row, col) => {
+        if (gameOver) {
+            GameView.showGameOver();
+            return;
+        }
+
+        const successfulMove = Gameboard.placeMarker(
+            row,
+            col,
+            currentPlayer.marker
+        );
+
+        if (!successfulMove) {
+            GameView.showOccupiedCell();
+            return;
+        }
+
+        GameView.showMove(currentPlayer);
+        GameView.showBoard(Gameboard.getBoard());
+
+        const board = Gameboard.getBoard();
+
+        if (GameRules.hasWinner(
+            board,
+            currentPlayer.marker
+        )) {
+            GameView.showWinner(currentPlayer);
+            gameOver = true;
+            return;
+        }
+
+        if (GameRules.isDraw(board)) {
+            GameView.showDraw();
+            gameOver = true;
+            return;
+        }
+
+        switchPlayer();
+        GameView.showTurn(currentPlayer);
+    };
+
+    const restartGame = () => {
+        Gameboard.reset();
+
+        currentPlayer = player1;
+        gameOver = false;
+
+        GameView.showRestart();
+        GameView.showBoard(Gameboard.getBoard());
+    };
+
+    return {
+        playRound,
+        restartGame,
+        getCurrentPlayer
+    };
+})();
